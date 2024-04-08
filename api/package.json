@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "func start",
-    "dev": "doppler run --debug -- func start --javascript --cors *"
+    "dev": "doppler run -- func start --javascript --cors *"
   },
   "engines": {
     "node": "18.x"

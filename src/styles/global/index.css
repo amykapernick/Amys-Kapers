@@ -26,6 +26,10 @@ body {
 	top: 0;
 	width: 100vw;
 	margin: 0;
+
+	&.calendar_page {
+		min-height: 100vh;
+	}
 }
 
 .sr-only {

@@ -1,5 +1,7 @@
 ---
-const { calendarDates = [], calendarEvents = [], calendarProjects = [], calendarTrips = [], anonymous } = Astro.props
+const { dates = [], anonymous = false } = Astro.props
+
+const workingHours = 15
 ---
 
 <style>
@@ -10,7 +12,7 @@ const { calendarDates = [], calendarEvents = [], calendarProjects = [], calendar
 	}
 
 	p {
-		margin: 0 0 1em;
+		margin: 5px 5px 5px 0;
 		color: #36454f;
 		font-size: 1.17em;
 		font-weight: 700;
@@ -30,186 +32,190 @@ const { calendarDates = [], calendarEvents = [], calendarProjects = [], calendar
 	.dates {
 		display: grid;
 		position: relative;
-		grid-gap: 5px;
+		grid-column-gap: 5px;
 		grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
-		grid-template-rows: repeat(12, minmax(min-content, 1fr));
+		grid-template-rows: repeat(12, auto minmax(1em, 1fr) minmax(1em, 1fr) minmax(1em, 1fr) 5px);
 		border-top: 1px solid #85caf6;
 	}
 
 	.date {
 		display: flex;
-		grid-column: var(--offset);
-		grid-row: var(--month);
 		flex-direction: column;
 		align-items: flex-end;
 		justify-content: flex-start;
-		padding: 5px;
-		background: rgba(133, 202, 246, 0.8);
+		padding: 0;
+
+		&[data-month="1"] {
+			&:before {
+				content: attr(data-day);
+				position: absolute;
+				top: -1.3em;
+				color: #eef1f6;
+				font-size: 0.8em;
+				font-weight: 600;
+			}
+		}
+	}
+
+	.month {
+		position: absolute;
+		z-index: -1;
+		transform: translateY(-15px) translateX(50px);
+		color: #ca8ef6;
+		font-size: 3em;
+		font-weight: bold;
+		grid-column: var(--offset);
+		grid-row: var(--row);
+	}
+
+	.date, .events {
+		--background: rgba(133, 202, 246, 0.8);
+
+		grid-column: var(--offset);
+		grid-row: var(--row);
+		position: relative;
 
 		&[data-day='Sat'],
 		&[data-day='Sun'] {
-			background: #85caf6;
+			--background: #85caf6;
 		}
 
-		&:before {
-			content: attr(data-day);
+		&::after {
+			background: var(--background);
 			position: absolute;
-			top: -1.3em;
-			color: #eef1f6;
-			font-size: 0.8em;
-			font-weight: 600;
-		}
-
-		&[data-monthName] {
-			&:after {
-				content: attr(data-monthName);
-				position: absolute;
-				z-index: -1;
-				left: calc(var(--offset) * 50px);
-				transform: translateY(-15px);
-				color: #ca8ef6;
-				font-size: 3em;
-				font-weight: bold;
-			}
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			content: '';
+			z-index: -1;
 		}
 	}
 
-	.event,
-	.trip,
-	.project {
-		display: flex;
-		position: relative;
-		grid-column: var(--offset) / span var(--length);
-		grid-row-start: var(--row);
-		align-items: center;
-		align-self: end;
-		justify-content: center;
-		padding: 5px;
-		border: 2px solid $green;
-		background: rgba($green, 0.7);
-		font-size: 0.6em;
-
-		&:before {
-			content: var(--icon);
-			display: none;
-			position: absolute;
-			top: -0.8em;
-			left: -0.8em;
-			font-size: 0.8em;
-		}
-
-		&:hover {
-			&:before {
-				display: block;
-			}
-		}
-
-		&[data-status='cancelled'] {
-			border-color: $red;
-			background-color: rgba($red, 0.7);
-		}
-
-		&[data-status='moved'] {
-			border-color: $orange;
-			background-color: rgba($orange, 0.7);
-		}
-
-		&[data-status='online'] {
-			border-color: $pink;
-			background-color: rgba($pink, 0.7);
-		}
+	.events {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		max-width: 100%;
+		display: grid;
 	}
 
 	.event {
-		z-index: 5;
-		text-align: center;
-	}
+		--colour: $green;
+		--text: $neutral;
 
-	.trip {
-		justify-content: flex-start;
-		border-color: $purple_bright;
-		background-color: rgba($purple_bright, 0.7);
-		font-size: 0.4em;
-	}
+		margin: 0;
+		padding: 0 7px;
+		border: 2px solid var(--colour);
+		color: var(--text);
+		font-size: 0.5em;
+		position: relative;
+		z-index: 2;
+		max-width: calc(100% + 5px);
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		line-clamp: 2;
+		text-overflow: ellipsis;
+		-webkit-line-clamp: 2;
+		min-height: 1em;
 
-	.project {
-		border-color: $navy;
-		background-color: rgba($navy, 0.7);
-		font-size: 0.4em;
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: var(--colour);
+			opacity: 0.7;
+			z-index: -1;
+		}
+
+		&:not([data-start]) {
+			margin-left: -2.5px;
+			border-left: none;
+		}
+
+		&:not([data-end]) {
+			margin-right: -2.5px;
+			border-right: none;
+		}
+
+		&[data-end] {
+			text-align: right;
+			justify-content: end;
+		}
+
+		&:not([data-start], [data-end]) {
+			color: transparent;
+		}
+
+		&[data-type="trip"] {
+			--colour: $purple_bright;
+		}
+
+		&[data-type="project"] {
+			--colour: $navy;
+			--text: $white;
+		}
 	}
 </style>
 
 <>
 {
-	Object.entries(calendarDates).map(([year, days]) => (
+	Object.entries(dates).map(([year, days]) => (
 		<div class={`year y-${year}`}>
 			<h2>{year}</h2>
 			<div class="dates">
 				{days.map((day) => (
-					<div
-						data-monthName={day.monthName}
-						data-day={day.day}
-						style={{
-							"--month": day.month,
-							"--offset": day.offset,
-						}}
-						class="date"
-					>
-						<p>{day.date}</p>
-					</div>
+					<>
+						{day.date === 1 && 
+							<p
+								class="month"
+								style={{
+									"--row": (day.month * 5) - 3,
+									"--offset": day.offset,
+								}}
+							>
+								{day.monthName}	
+							</p>
+						}
+						<div							data-day={day.day}
+							style={{
+								"--row": (day.month * 5) - 4,
+								"--offset": day.offset,
+							}}
+							class="date"
+						>
+							<p>{day.date}</p>
+							
+						</div>
+						{Object.entries({
+							trip: day.trips, 
+							event: day.events, 
+							project: day.projects
+						}).map(([type, entries], i) => (
+							<ul
+								class="events"
+								style={{
+									"--row": (day.month * 5) - 3 + i,
+									"--offset": day.offset,
+								}}
+								data-day={day.day}
+							>
+								{entries.map((event) => (
+									<li
+										class="event"
+										data-start={event.startDay}
+										data-end={event.endDay}
+										data-status={event.cfp || event.status}
+										data-type={type}
+									>
+										{!anonymous && event.name}
+									</li>
+								))}	
+							</ul>
+						))}
+					</>
 				))}
-				{calendarEvents
-					.filter((event) => event.year == year)
-					.map((event) => (
-						<div
-							class="event"
-							data-status={event.status}
-							style={{
-								"--offset": event.offset,
-								"--length": event.length,
-								"--row": event.row,
-								"--icon": event.icon,
-							}}
-						>
-							{!anonymous && `${event.icon} ${event.name}`}
-						</div>
-					))}
-				{calendarTrips
-					.filter((trip) => trip.year == year)
-					.map((trip) => (
-						<div
-							class="trip"
-							data-status={trip.status}
-							style={{
-								"--offset": trip.offset,
-								"--length": trip.length,
-								"--row": trip.row,
-								"--icon": trip.icon,
-							}}
-						>
-							
-							{!anonymous && `${trip.city}, ${trip.country}`}
-						</div>
-					))}
-					{calendarProjects
-					.filter((project) => project.year == year)
-					.map((project) => (
-						<div
-							class="project"
-							data-status={project.status}
-							data-capacity={project.capacity / 5}
-							style={{
-								"--offset": project.offset,
-								"--length": project.length,
-								"--row": project.row,
-								"--icon": project.icon,
-								"--capacity": `${(Number(project.capacity) / 5) * 100}%`
-							}}
-						>
-							
-							{!anonymous && `${project.name}`}
-						</div>
-					))}
 			</div>
 		</div>
 	))

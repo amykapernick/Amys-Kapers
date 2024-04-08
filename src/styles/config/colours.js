@@ -37,6 +37,7 @@ const colours = {
 	dark_pink: '#D976AF',
 	dark_orange: '@orange',
 	dark_yellow: '@yellow',
+	green_kaperscrewe: '#275942',
 }
 
 module.exports = formatVariables(colours)

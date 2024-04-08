@@ -49,6 +49,7 @@ module.exports = async function (context, req) {
         type: properties.Type.multi_select.map(({ name }) => name.toLowerCase()),
         url: properties.URL.url,
         hidden: properties.Hidden.checkbox,
+        cfp: properties['CFP Status'].status.name
     }))
         .map(event => ({
             ...event,
@@ -60,6 +61,7 @@ module.exports = async function (context, req) {
             },
             hidden: event.type?.length < 1 ? true : event.hidden
         }))
+        .filter(({ cfp }) => !['Rejected', 'Declined/Conflict'].includes(cfp))
 
     context.res = {
         body: events

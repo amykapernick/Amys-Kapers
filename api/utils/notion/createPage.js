@@ -14,7 +14,7 @@ module.exports = async ({ params, fields, context }) => {
     let data = {}
     let props = {}
 
-    context.log({ params, fields })
+    // context.log({ params, fields })
 
     Object.entries(params).forEach(([key, val]) => {
         const section = fields[key]
@@ -43,6 +43,8 @@ module.exports = async ({ params, fields, context }) => {
         else if (section.type == 'multi_select') {
             const opts = []
 
+            if (val == "") return;
+
             if (Array.isArray(val)) {
                 val.forEach(e => {
                     opts.push({
@@ -59,6 +61,7 @@ module.exports = async ({ params, fields, context }) => {
             data[section.name] = {
                 [section.type]: opts
             }
+
         }
         else {
             data[section.name] = {
@@ -70,7 +73,7 @@ module.exports = async ({ params, fields, context }) => {
 
     })
 
-    context.log({ data, props })
+    // context.log({ ...data, params })
 
     await notion.pages.create({
         parent: {

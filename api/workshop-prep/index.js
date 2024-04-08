@@ -13,7 +13,7 @@ module.exports = async function (context, req) {
         params: {
             form: 'workshop-prep'
         }
-    })    
+    })
 
     await createPage({
         params,

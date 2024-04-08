@@ -1,5 +1,5 @@
 module.exports = {
-	html: {
+	rating: {
 		name: 'Rating',
 		type: 'select'
 	},
@@ -9,6 +9,10 @@ module.exports = {
 	},
 	comments: {
 		name: 'Comments',
+		type: 'rich_text'
+	},
+	talk: {
+		name: 'Talk',
 		type: 'rich_text'
 	}
 }

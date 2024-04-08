@@ -6,8 +6,6 @@ const parseICS = require('../utils/parseics')
 module.exports = async function (context, req) {
     const today = new Date()
 
-    console.log({ env: process.env.TRIPIT_URL })
-
     const ics = await fetch(process.env.TRIPIT_URL).then(res => res.text())
     const tripitData = parseICS(ics)
 

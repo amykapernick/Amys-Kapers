@@ -1,0 +1,98 @@
+---
+import Layout from "@layouts/embed";
+import StatsFeed from '@react/stats'
+
+const content = {
+	title: "Stats Embed",
+};
+
+let url = `${import.meta.env.API_URL}`;
+
+if (!url.includes("http")) {
+	url = `${import.meta.env.SITE_URL}${url}`;
+}
+
+const {statusCounts, attendeeCounts} = await fetch(`${url}/stats`)
+	.then((res) => {
+		return res.json();
+	})
+	.catch((err) => {
+		console.log({ fetch: "stats", err });
+
+		return [];
+	});
+---
+
+<style is:global>
+	.stats {
+		& dl {
+			display: grid;
+			text-align: center;
+			grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+			grid-auto-rows: auto 1fr;
+			margin: 0;
+			font-weight: 700;
+		}
+
+		& span {
+			flex: 1 1 max-content;
+			padding: 5px;
+			display: grid;
+			grid-template-rows: subgrid;
+			align-items: center;
+			grid-row: span 2;
+			position: relative;
+			margin: 5px;
+			order: -1;
+
+			&::before, &::after {
+				background: var(--colour);
+				opacity: 0.1;
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: -1;
+			}
+
+			&::before {
+				background: $white;
+				opacity: 1;
+			}
+
+			&.double {
+				grid-column: span 2;
+				order: 2;
+
+				&:first-of-type {
+					grid-row: 4;
+				}
+			}
+
+			& dl {
+				font-size: 0.5em;
+				margin: -5px;
+			}
+		}
+
+		& dt {
+			width: 100%;
+			padding: 5px;
+		}
+
+		& dd {
+			margin: 0;
+			width: 100%;
+			font-size: 2em;
+			color: var(--colour, $neutral);
+		}
+	}
+</style>
+
+<Layout content={content}>
+	<div class="stats">
+		<StatsFeed client:load api={import.meta.env.API_URL} />
+	</div>
+</Layout>

@@ -2,7 +2,7 @@
 import SVG from "@parts/svg";
 import Icons from "./icons.astro";
 
-const { graphic = false, icons = false } = Astro.props
+const { graphic = false, icons = false, ...props } = Astro.props
 
 ---
 
@@ -168,7 +168,7 @@ const { graphic = false, icons = false } = Astro.props
 
 </style>
 
-<section class={Astro.props.class}>
+<section class={Astro.props.class} {...props}>
 	{graphic && <SVG name={graphic} class="graphic" />}
 	<div class="content">
 		<slot />

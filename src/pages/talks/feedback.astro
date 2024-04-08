@@ -4,16 +4,21 @@ import {
 	rating
 } from "@data/forms/talkFeedback";
 import RangeField from "@parts/rangeField";
+import parseTalks from "@utils/parseTalks";
+
+const { talks } = await fetch(import.meta.env.NOTIST_FEED)
+	.then((res) => res.json())
+	.then((res) => parseTalks(res?.data?.[0]?.relationships?.data))
+	.catch((err) => {
+		console.log({ type: "fetch_talks", err });
+
+		return {};
+	});
 
 const content = {
 	title: "Talk Feedback | Amy Kapernick",
 	description: "A few questions about the presentation",
 };
-
-const details = {
-	talk: `Your Website doesn't need JavaScript`,
-	event: 'NDC Porto 2023'
-}
 ---
 <style>
 	@import '@mixins';
@@ -32,9 +37,10 @@ const details = {
 	}
 </style>
 
+
 <Layout content={content} header="reduced">
 	<article>
-		<h1>{details.talk}</h1>
+		<h1>Talk Feedback</h1>
 		<form
 			id="workshop-prep"
 			action={`${import.meta.env.API_URL}/talk-feedback`}
@@ -47,13 +53,36 @@ const details = {
 			/>
 			<input type="hidden" name="page" value={Astro.url.pathname} />
 			<input type="hidden" name="function" value="talk-feedback" />
-			<input type="hidden" name="talk" value={details.talk} />
-			<input type="hidden" name="name" value={details.event} />
 			<input
 				type="hidden"
 				name="notion_page"
 				value={import.meta.env.PAGE_TALK_FEEDBACK}
 			/>
+
+			<label for="title">Talk</label>
+			<input 
+				id="title"
+				type="text" 
+				name="talk" 
+				list="talks"
+				required
+			/>
+			<datalist id="talks">
+				{Object.values(talks).map((talk) => (
+					<>
+						{talk?.title && <option value={talk.title} />}
+					</>
+				))}
+			</datalist>
+
+			<label for="event">Event</label>
+			<input 
+				type="text" 
+				name="name" 
+				id="event"
+				required
+			/>
+
 			<RangeField
 				label="How would you rate the talk?"
 				name="rating"
@@ -73,3 +102,14 @@ const details = {
 		</form>
 	</article>
 </Layout>
+
+<script is:inline>
+	window.addEventListener('DOMContentLoaded', () => {
+	  const urlParams = new URLSearchParams(window.location.search);
+	  const title = document.querySelector('#title') || {}
+	  const event = document.querySelector('#event') || {}
+
+	  title.value = urlParams?.get('talk') || '';
+	  event.value = urlParams?.get('event') || '';
+	});
+</script>

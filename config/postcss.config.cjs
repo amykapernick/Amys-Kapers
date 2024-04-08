@@ -19,9 +19,9 @@ module.exports = {
 		nesting({
 			noIsPseudoSelector: true
 		}),
-		stylelint({
-			configFile: `./config/.stylelint.config.cjs`,
-			quiet: true
-		})
+		// stylelint({
+		// 	configFile: `./config/.stylelint.config.cjs`,
+		// 	quiet: true
+		// })
 	],
 };

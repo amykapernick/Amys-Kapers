@@ -6,8 +6,6 @@ const createPage = require('../utils/notion/createPage')
 const formatData = require('../utils/formatFormData')
 
 module.exports = async function (context, req) {
-    context.log({ req })
-
     const params = formatData({
         options,
         data: decodeURIComponent(req.body).split(`&`),

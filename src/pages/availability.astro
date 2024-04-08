@@ -1,10 +1,6 @@
 ---
-import calendarYears from "@utils/calendar/years";
 import Layout from "@layouts/calendar";
 import CalendarLayout from '@partials/calendar'
-import parseEvents from "@utils/calendar/parseEvents";
-import parseTravel from "@utils/calendar/parseTravel";
-import parseProjects from "@utils/calendar/parseProjects";
 
 const content = {
 	title: "Calendar - Year in a View",
@@ -16,39 +12,16 @@ if (!url.includes("http")) {
 	url = `${import.meta.env.SITE_URL}${url}`;
 }
 
-const events = await fetch(`${url}/events?filter=all`)
+const {dates} = await fetch(`${url}/calendar`)
 	.then((res) => {
 		return res.json();
 	})
 	.catch((err) => {
-		console.log({ fetch: "calendar_events", err });
-
-		return [];
-	});
-const travel = await fetch(`${url}/travel?filter=all`)
-	.then((res) => {
-		return res.json();
-	})
-	.catch((err) => {
-		console.log({ fetch: "calendar_travel", err });
+		console.log({ fetch: "calendar", err });
 
 		return [];
 	});
 
-const projects = await fetch(`${url}/projects?filter=all`)
-	.then((res) => {
-		return res.json();
-	})
-	.catch((err) => {
-		console.log({ fetch: "calendar_projects", err });
-
-		return [];
-	});
-
-const calendarDates = calendarYears(events);
-const calendarEvents = parseEvents(events);
-const calendarTrips = parseTravel(travel);
-const calendarProjects = parseProjects(projects)
 ---
 
 <style>
@@ -93,9 +66,9 @@ const calendarProjects = parseProjects(projects)
 	}
 </style>
 
-<Layout content={content}>
+<Layout content={content} class="calendar_page">
 	<div class="calendar">
 		<h1>Availability</h1>
-		<CalendarLayout {...{calendarDates, calendarEvents, calendarTrips, calendarProjects}} anonymous={true} />
+		<CalendarLayout {dates} anonymous={true} />
 	</div>
 </Layout>

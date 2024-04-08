@@ -75,7 +75,7 @@ const classes = ['rotate', Astro.props.class]
 
 </style>
 
-<div class={classes.join(' ')}>
+<div class={classes.join(' ')} {...Astro.props}>
 	<p>I'm a</p>
 	<ul class="options">
 		<li>Front End Developer</li>

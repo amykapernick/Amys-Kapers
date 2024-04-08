@@ -64,7 +64,7 @@ const icons = Astro.props.icons.map((icon) => {
 
 </style>
 
-<ul class={Astro.props.class}>
+<ul class={Astro.props.class} {...Astro.props}>
 	{icons.map(icon => (
 		<li>
 			<a
