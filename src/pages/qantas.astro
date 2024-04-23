@@ -1,0 +1,60 @@
+---
+import Layout from "@layouts/embed";
+import QantasInfo from '@react/qantas'
+
+const content = {
+	title: "Qantas Info",
+};
+
+let url = `${import.meta.env.API_URL}`;
+
+if (!url.includes("http")) {
+	url = `${import.meta.env.SITE_URL}${url}`;
+}
+---
+
+<style is:global>
+	.qantas {
+		& dl {
+			display: grid;
+			text-align: center;
+			grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+			grid-auto-rows: auto 1fr;
+			margin: 0;
+			font-weight: 700;
+		}
+
+		& span {
+			flex: 1 1 max-content;
+			padding: 5px;
+			display: grid;
+			grid-template-rows: subgrid;
+			align-items: center;
+			grid-row: span 2;
+			position: relative;
+			margin: 5px;
+
+			& dl {
+				font-size: 0.5em;
+				margin: -5px;
+			}
+		}
+
+		& dt {
+			width: 100%;
+			padding: 5px;
+		}
+
+		& dd {
+			margin: 0;
+			width: 100%;
+			font-size: 1.5em;
+		}
+	}
+</style>
+
+<Layout content={content}>
+	<div class="qantas">
+		<QantasInfo client:only="react" api={url} />
+	</div>
+</Layout>
