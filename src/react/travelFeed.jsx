@@ -26,6 +26,7 @@ const TravelFeed = (props) => {
 							{data.map(({ country_code, country, city, start, end }) => (
 								<li key={start}>
 									<img
+										loading="lazy"
 										height="18"
 										width="24"
 										alt={`Flag of ${country}`} 

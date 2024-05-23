@@ -46,6 +46,7 @@ const EventFeed = (props) => {
 								const content = <>
 									{type?.map((t) => (
 										<img 
+											loading="lazy"
 											height="18"
 											width="24"
 											key={t}
