@@ -46,7 +46,41 @@ module.exports = async function (context, req) {
     const { workshopHtmlElements } = await fetchSources('workshopHtmlElements')
     let data = {}
 
-    if (!req?.query?.element) {
+    if (req?.query?.element) {
+        const notionData = await notion.pages.retrieve({ page_id: req.query.element });
+        const elementData = {
+            name: notionData.properties.Name.title[0].plain_text,
+            mdn: notionData.properties.MDN.url,
+            html: notionData.properties['HTML Reference'].url,
+            votes: notionData.properties.Votes.number,
+        }
+
+        if (req.method === "POST") {
+            await notion.pages.update({
+                page_id: req.query.element,
+                properties: {
+                    Votes: {
+                        number: elementData.votes + 1
+                    }
+                }
+            })
+
+            data = { message: 'success' }
+        }
+        else {
+            const n2m = new NotionToMarkdown({
+                notionClient: notion
+            })
+
+            const pageContent = await n2m.pageToMarkdown(req.query.element)
+
+            data = {
+                ...elementData,
+                markdown: n2m.toMarkdownString(pageContent)?.parent
+            }
+        }
+    }
+    else {
         const notionData = await fetchAllData({ database_id: workshopHtmlElements });
 
         data = notionData.map(({ properties, id, url }) => {
@@ -60,22 +94,6 @@ module.exports = async function (context, req) {
             })
         })
             .sort((a, b) => a.name.localeCompare(b.name))
-    }
-    else {
-        const n2m = new NotionToMarkdown({
-            notionClient: notion
-        })
-
-        const notionData = await notion.pages.retrieve({ page_id: req.query.element });
-        const pageContent = await n2m.pageToMarkdown(req.query.element)
-
-        data = {
-            name: notionData.properties.Name.title[0].plain_text,
-            mdn: notionData.properties.MDN.url,
-            html: notionData.properties['HTML Reference'].url,
-            votes: notionData.properties.Votes.number,
-            markdown: n2m.toMarkdownString(pageContent)?.parent
-        }
     }
 
     context.res = {
