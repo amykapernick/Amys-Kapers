@@ -47,7 +47,6 @@
     "remark-squeeze-paragraphs": "^6.0.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "astro-eslint-parser": "^1.0.2",
     "eslint": "^9.4.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -66,26 +65,6 @@
     "prettier": "^3.3.1",
     "prettier-plugin-astro": "^0.14.0",
     "stylelint": "^16.6.1",
-=======
-    "astro-eslint-parser": "^0.17.0",
-    "eslint": "^9.1.1",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-astro": "^0.34.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "postcss": "^8.4.38",
-    "postcss-advanced-variables": "^4.0.0",
-    "postcss-cli": "^11.0.0",
-    "postcss-import": "^16.1.0",
-    "postcss-mixins": "^10.0.0",
-    "postcss-nested-vars": "^1.0.0",
-    "postcss-nesting": "^12.1.2",
-    "postcss-rgb": "^1.0.0",
-    "postcss-scss": "^4.0.9",
-    "prettier": "^3.2.5",
-    "prettier-plugin-astro": "^0.13.0",
-    "stylelint": "^16.3.1",
->>>>>>> f1bf7eeb870472736d65f7e7793c0162d05da9b7
     "stylelint-config-astro": "^1.0.4",
     "stylelint-config-html": "^1.1.0",
     "stylelint-config-property-sort-order-smacss": "^10.0.0",
