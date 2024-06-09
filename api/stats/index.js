@@ -1,11 +1,14 @@
 const { Client } = require('@notionhq/client')
+const fetchSources = require('../utils/notion/fetchSources')
+
 const notion = new Client({ auth: process.env.NOTION_EVENTS_API })
 
 const sumArray = (arr) => arr.reduce((a, b) => a + b, 0)
 
 module.exports = async function (context, req) {
+    const { databaseInvites, databaseGuests } = await fetchSources('databaseInvites', 'databaseGuests')
     const notionInvites = await notion.databases.query({
-        database_id: process.env.INVITES_DB_ID,
+        database_id: databaseInvites,
         filter: {
             property: 'Status',
             status: {

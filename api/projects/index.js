@@ -1,9 +1,11 @@
 require('dotenv').config()
 const { set } = require('date-fns')
 const { Client } = require('@notionhq/client')
+const fetchSources = require('../utils/notion/fetchSources')
 const notion = new Client({ auth: process.env.NOTION_WORK_API })
 
 module.exports = async function (context, req) {
+    const { aimhigherDatabaseProjects } = await fetchSources('aimhigherDatabaseProjects')
     const today = set(new Date(), {
         hours: 0,
         minutes: 0,
@@ -38,7 +40,7 @@ module.exports = async function (context, req) {
     }
 
     const notionProjects = await notion.databases.query({
-        database_id: process.env.PROJECTS_DB_ID,
+        database_id: aimhigherDatabaseProjects,
         filter: datesFilter,
     })
 

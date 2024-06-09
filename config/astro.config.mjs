@@ -17,7 +17,7 @@ export default defineConfig({
 					replacement: `./src/styles/mixins/index.css`
 				}
 			]
-		}
+		},
 	},
 	// markdown: {
 	// 	syntaxHighlight: 'prism',

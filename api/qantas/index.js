@@ -1,13 +1,15 @@
 const { Client } = require('@notionhq/client')
 const parseQantas = require('../utils/parseQantas')
 const { addYears, set } = require('date-fns')
+const fetchSources = require('../utils/notion/fetchSources')
+
 const notion = new Client({ auth: process.env.NOTION_EVENTS_API })
 
 const fetchData = async (props) => {
-    const { page_size = 100, start_cursor = undefined, filter = undefined } = props
+    const { page_size = 100, start_cursor = undefined, filter = undefined, database_id } = props
 
     return await notion.databases.query({
-        database_id: process.env.QANTAS_DB_ID,
+        database_id,
         sorts: [
             {
                 property: 'Date',
@@ -88,12 +90,14 @@ module.exports = async function (context, req) {
         }
     }
 
-    const notionData = await fetchAllData({ filter });
+    const { qantasPoints, userAmy, userDan } = await fetchSources('qantasPoints', 'userAmy', 'userDan')
+
+    const notionData = await fetchAllData({ filter, database_id: qantasPoints });
     let data = []
 
     if (false) { }
     else {
-        data = parseQantas(notionData)
+        data = parseQantas(notionData, { Amy: userAmy, Dan: userDan })
     }
 
     context.res = {

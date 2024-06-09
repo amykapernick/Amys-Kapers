@@ -11,6 +11,9 @@ import {
 } from "@data/forms/workshopPrep";
 import RangeField from "@parts/rangeField";
 import RadioButtons from "@parts/radioButtons";
+import fetchSources from "@utils/fetchSources";
+
+const { workshopPrepResponses } = await fetchSources('workshopPrepResponses')
 
 const content = {
 	title: "Modern Front End Fundamentals Workshop | Amy Kapernick",
@@ -51,7 +54,7 @@ const content = {
 			<input
 				type="hidden"
 				name="notion_page"
-				value={import.meta.env.PAGE_WORKSHOP_PREP}
+				value={workshopPrepResponses}
 			/>
 			<label for="name">Name</label>
 			<input type="text" name="name" id="name" required />

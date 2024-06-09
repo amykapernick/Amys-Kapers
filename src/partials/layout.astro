@@ -4,6 +4,7 @@ import Favicon from "@img/amy_small.png";
 
 import "@styles/main.css";
 
+
 const env = import.meta.env.MODE;
 
 const siteData = {
@@ -21,6 +22,8 @@ const content = {
 const classes = [content?.class, Astro.props?.class].filter(Boolean);
 
 const { title, description } = content;
+
+
 ---
 
 <!DOCTYPE html>

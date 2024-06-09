@@ -1,18 +1,9 @@
 const { format, set, parse } = require("date-fns")
 
-const people = [
-	{
-		id: process.env.NOTION_AMY_ID,
-		name: 'Amy'
-	},
-	{
-		id: process.env.NOTION_DAN_ID,
-		name: 'Dan'
-	}
-]
 
-const parseQantas = (notionData) => {
+const parseQantas = (notionData, users) => {
 	const events = []
+	const people = Object.entries(users).map(([name, id]) => ({ name, id }))
 
 	notionData.forEach(event => {
 		const { properties } = event

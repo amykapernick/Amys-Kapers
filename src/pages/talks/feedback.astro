@@ -5,6 +5,7 @@ import {
 } from "@data/forms/talkFeedback";
 import RangeField from "@parts/rangeField";
 import parseTalks from "@utils/parseTalks";
+import fetchSources from "@utils/fetchSources";
 
 const { talks } = await fetch(import.meta.env.NOTIST_FEED)
 	.then((res) => res.json())
@@ -14,6 +15,8 @@ const { talks } = await fetch(import.meta.env.NOTIST_FEED)
 
 		return {};
 	});
+
+const { talkFeedbackResponses } = await fetchSources('talkFeedbackResponses')
 
 const content = {
 	title: "Talk Feedback | Amy Kapernick",
@@ -56,7 +59,7 @@ const content = {
 			<input
 				type="hidden"
 				name="notion_page"
-				value={import.meta.env.PAGE_TALK_FEEDBACK}
+				value={talkFeedbackResponses}
 			/>
 
 			<label for="title">Talk</label>

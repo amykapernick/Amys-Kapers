@@ -3,8 +3,10 @@ const { set } = require('date-fns')
 const formatDate = require('../utils/formatDate')
 const { Client } = require('@notionhq/client')
 const notion = new Client({ auth: process.env.NOTION_EVENTS_API })
+const fetchSources = require('../utils/notion/fetchSources')
 
 module.exports = async function (context, req) {
+    const { databaseEvents } = await fetchSources('databaseEvents')
     const today = new Date()
     const filter = req?.query?.filter
     let eventsFilter = {
@@ -32,7 +34,7 @@ module.exports = async function (context, req) {
     }
 
     const notionEvents = await notion.databases.query({
-        database_id: process.env.EVENTS_DB_ID,
+        database_id: databaseEvents,
         filter: eventsFilter,
         sorts: [
             {
