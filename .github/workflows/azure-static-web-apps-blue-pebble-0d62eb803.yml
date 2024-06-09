@@ -39,17 +39,11 @@ jobs:
           api_location: "api"
           output_location: "dist"
         env:
-          # API variables
-          FORM_WORKSHOP_BOOKING: ${{ secrets.FORM_WORKSHOP_BOOKING }}
-          FORM_CONTACT: ${{secrets.FORM_CONTACT}}
-          FORM_WORKSHOP_PREP: ${{secrets.FORM_WORKSHOP_PREP}}
-          FORM_WORKSHOP_FEEDBACK: ${{secrets.FORM_WORKSHOP_FEEDBACK}}
           # Site Variables
           NOTIST_FEED: ${{ secrets.NOTIST_FEED }}
           API_URL: ${{ secrets.API_URL }}
           SITE_URL: ${{ secrets.SITE_URL }}
-          PAGE_WORKSHOP_FEEDBACK: ${{secrets.PAGE_WORKSHOP_FEEDBACK}}
-          PAGE_WORKSHOP_PREP: ${{secrets.PAGE_WORKSHOP_PREP}}
+          NOTION_API: ${{secrets.NOTION_API}}
 
       - name: Rebuild and Deploy
         uses: Azure/static-web-apps-deploy@v1
