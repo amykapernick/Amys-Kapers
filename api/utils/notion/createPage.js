@@ -14,7 +14,7 @@ module.exports = async ({ params, fields, context }) => {
     let data = {}
     let props = {}
 
-    // context.log({ params, fields })
+    context.log({ params, fields })
 
     Object.entries(params).forEach(([key, val]) => {
         const section = fields[key]
@@ -73,7 +73,8 @@ module.exports = async ({ params, fields, context }) => {
 
     })
 
-    // context.log({ ...data, params })
+    context.log({ ...data, params })
+    context.log({ props })
 
     await notion.pages.create({
         parent: {
