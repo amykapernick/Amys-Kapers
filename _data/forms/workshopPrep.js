@@ -149,17 +149,9 @@ export const js_skills = {
 }
 
 export const node_version = {
-	max: 16,
-	min: 6,
+	max: 20,
+	min: 10,
 	opts: [
-		{
-			value: 6,
-			label: '6.x.x'
-		},
-		{
-			value: 8,
-			label: '8.x.x'
-		},
 		{
 			value: 10,
 			label: '10.x.x'
@@ -175,6 +167,14 @@ export const node_version = {
 		{
 			value: 16,
 			label: '16.x.x'
+		},
+		{
+			value: 18,
+			label: '18.x.x'
+		},
+		{
+			value: 20,
+			label: '20.x.x'
 		}
 	]
 }

@@ -1,11 +1,11 @@
 module.exports = {
 	os: [
 		{
-			value: 'mac', 
+			value: 'mac',
 			label: 'MacOS'
 		},
 		{
-			value: 'windows', 
+			value: 'windows',
 			label: 'Windows'
 		},
 		{
@@ -151,18 +151,10 @@ module.exports = {
 		]
 	},
 	node_version: {
-		max: 16,
-		min: 6,
+		max: 20,
+		min: 10,
 		step: 1,
 		opts: [
-			{
-				value: 6,
-				label: '6.x.x'
-			},
-			{
-				value: 8,
-				label: '8.x.x'
-			},
 			{
 				value: 10,
 				label: '10.x.x'
@@ -178,6 +170,14 @@ module.exports = {
 			{
 				value: 16,
 				label: '16.x.x'
+			},
+			{
+				value: 18,
+				label: '18.x.x'
+			},
+			{
+				value: 20,
+				label: '20.x.x'
 			}
 		]
 	},
